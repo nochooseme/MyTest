@@ -1,0 +1,404 @@
+
+body{
+    font-family: "Microsoft YaHei UI";
+    margin: 0 0;
+    width: 1000px;
+    background-color: #f6f6f6;
+}
+nav{
+    position: fixed;
+    width: 100%;
+    height: 35px;
+    margin: 0px 0px;
+    padding:10px 200px;
+    background-color: #ffffff;
+    border: 1px solid #ededed;
+}
+a{
+    margin:0px 20px;
+    font-family: "Microsoft YaHei UI";
+    text-decoration-line: none;
+    color: #9590b0;
+}
+a:hover{
+    color:#0084ff;
+}
+ul{
+    list-style-type: none;
+    padding: 0 0;
+}
+li{
+    margin: 5px 0;
+}
+hr{
+    color: #9590b0;
+}
+.active{
+    color:#0084ff;
+}
+.search{
+    background-color: #f6f6f6;
+    display: inline-block;
+    border: 1px solid #ededed;
+    border-radius: 8px;
+}
+.text{
+    border: none;
+    height: 24px;
+    width: 325px;
+    padding: 5px 10px;
+    background-color: #f6f6f6;
+}
+.searchbutton{
+    color: #9590b0;
+    border: none;
+    background-color: #f6f6f6;
+}
+.searchbutton:hover{
+    color:#0084ff;
+}
+.userinfo{
+    display: inline-block;
+    padding:0 100px;
+}
+.container{
+    width: 100%;
+    padding:50px 200px;
+
+}
+.booklist{
+    float: left;
+}
+.margin20{
+    margin: 20px 0;
+}
+.usermanagement{
+    float: left;
+    position: fixed;
+    right:320px ;
+    top:50px;
+    width: 200px;
+    background-color: white;
+    margin: 20px 10px;
+    padding: 10px;
+    border: 1px solid #ededed;
+    border-radius:5px;
+}
+
+.bookcard{
+    width:700px;
+    height: 280px;
+    background-color: white;
+    border: 1px solid #ededed;
+    border-radius:5px;
+    padding: 20px;
+    margin: 10px 0px 0px 0px;
+
+}
+.searchbook{
+    height: 150px;
+    margin: 0;
+}
+.bookinfo{
+    height: 50px;
+}
+.spanvalue{
+    color: #9590ba;
+}
+.spantext{
+    color: #9590ba;
+    display: block;
+}
+.smalltext{
+    font-size: small;
+}
+.name{
+    font-size: 25px;
+}
+.author{
+    color: #9590ba;
+}
+.category{
+    display: inline-block;
+    width:40px;
+    padding:0 10px;
+    border: 1px solid;
+    border-radius: 10px;
+    background-color:#0084ff ;
+    color: white;
+}
+.newchapter{
+    margin:0 100px;
+    display: inline-block;
+    font-size: 14px;
+}
+.chapter{
+    text-decoration-line: underline;
+    color: #0084ff;
+}
+.bookimg{
+    display: inline-block;
+    float:left;
+    height: 150px;
+    width: 100px;
+}
+.bookintroduction{
+    padding: 20px;
+    display:inline-block;
+    width: 450px;
+    min-height:150px;
+}
+.button{
+    border: 1px solid;
+    background-color: white;
+    color:#85abd0;
+    margin: 0px 10px;
+    padding: 5px 10px;
+}
+.bookcategory{
+    background-color: white;
+    border: 1px solid #ededed;
+    border-radius:5px;
+    padding: 20px;
+    margin: 20px 0px;
+    width:700px;
+    height: 100px;
+}
+.bookcategory li{
+    display: inline-block;
+    margin: 5px;
+    padding:  0 10px;
+    border: 1px solid;
+    border-radius: 10px;
+    color: #959ed0;
+}
+.bookcategory .active{
+    background-color:#0084ff ;
+    color: white;
+    font-size: 20px;
+}
+.paging{
+    margin: 0 auto;
+}
+.paging ul{
+    display: inline-block;
+}
+.paging input[type="text"]{
+    display: inline-block;
+    padding: 0;
+    width: 25px;
+    height: 24px;
+    border: 1px solid #959ed0;
+    border-radius: 5px 0 0 5px;
+}
+.paging button{
+    height: 25px;
+    font-family: "Microsoft YaHei UI";
+    border: 1px solid #959ed0;
+    border-radius:0 5px 5px 0;
+    color: rgba(1, 1, 1, 0.62);
+}
+.paging li{
+    display: inline-block;
+    margin: 0 5px;
+    padding:0 10px;
+    width: 20px;
+    color:#9590ba;
+}
+.paging .active{
+    color: #0084ff;
+}
+.readpage{
+    width: 800px;
+    margin: 50px auto;
+    padding:60px 65px;
+    background-color: white;
+    border: 1px solid #ededed;
+    border-radius:5px;
+}
+.chapterName{
+
+}
+
+.center{
+    width: 181px;
+    margin: 0 auto;
+}
+.center li{
+    display: inline-block;
+}
+.width1000{
+    width: 1000px;
+    margin: 30px auto;
+}
+.card{
+    padding:20px 25px;
+    background-color: white;
+    border: 1px solid #ededed;
+    border-radius:5px;
+}
+.nav{
+
+}
+.nav li{
+    display: inline-block;
+}
+.user{
+    padding:60px 65px;
+    background-color: white;
+    border: 1px solid #ededed;
+    border-radius:5px;
+    height: 150px;
+}
+.circle{
+    width: 150px;
+    height: 150px;
+    border: 1px solid #ededed;
+    border-radius:50%;
+}
+.userimg{
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+
+}
+.richtable{
+    width: 100%;
+    text-align: center;
+}
+.management{
+    width: 1200px;
+    height: 1000px;
+    margin: 40px 0;
+    background-color: white;
+    border: 1px solid #efefef;
+}
+.mainleft{
+    float: left;
+    height: 100%;
+    width: 140px;
+    border: 1px solid #efefef;
+}
+.mainleft ul{
+    margin: 0;
+    padding: 0;
+}
+.mainleft li{
+    margin: 0;
+}
+.mainleft a{
+    display: inline-block;
+    margin: 0;
+    padding: 10px;
+    width: 120px;
+}
+.mainleftactive{
+    border:1px solid #0084ff;
+    color: white;
+    background-color: #0084ff;
+}
+a.mainleftactive:hover {
+    color: white;
+}
+.main{
+    float: left;
+    height: 100%;
+    width: 1056px;
+    border: 1px solid #efefef;
+}
+.maintop{
+    width: 100%;
+    height:23px;
+    padding: 10px;
+    background-color:#f9f9f9 ;
+}
+.maincard{
+    padding: 20px;
+}
+.login{
+    width: 350px;
+    height: 250px;
+    background-color: white;
+    border: 1px solid #ededed;
+    border-radius: 5px ;
+    margin: 100px auto;
+}
+.register{
+    width: 350px;
+    height: 350px;
+    background-color: white;
+    border: 1px solid rgba(78, 78, 78, 0.7);
+    border-radius: 5px ;
+    margin: 100px auto;
+}
+.bigbutton{
+    width: 100%;
+    background-color: #0077e6;
+    margin: 0px;
+    color: white;
+}
+.hiddleinput{
+    border:none;
+    width: 100%;
+}
+.logintable{
+    width: 210px;
+    margin: 50px auto;
+}
+.logintable td{
+    height: 40px;
+}
+.center2{
+    width: 300px;
+    margin: 0 auto;
+}
+.writechaptername{
+    width: 800px;
+}
+.writecontent{
+    width: 800px;
+    height: 800px;
+}
+.floatupdate{
+    position: fixed;
+    top: 150px;
+    right: 300px;
+}
+.backgroundimg{
+    background-image: url("../images/bk.png");
+}
+.ui-table {
+    font-size: 14px;
+    width: 100%;
+    table-layout: fixed;
+    border-spacing: 0;
+    color: #3e3d43;
+}
+.ui-table tr {
+    cursor: default;
+}
+.ui-table th{
+    font-size: 12px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 40px;
+    margin: 0;
+    text-align: left;
+    color: #7f7f7f;
+    padding: 0 20px;
+    border-bottom: 1px solid #e0deda;
+}
+
+.ui-table td {
+    line-height: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0deda;
+    padding: 0 20px;
+    font-size: 12px;
+    height: 40px;
+}
+.normala{
+    margin:0;
+}

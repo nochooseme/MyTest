@@ -1,0 +1,30 @@
+function logout(){
+	$.ajax({
+		async:false,
+		type:"post",
+		url:"logout",
+		data:{},
+		contentType:"application/json",
+		success:function(data){
+			window.location.href=data.result;		
+		},
+		error:function(data){
+			alert("发生错误！");
+		}
+	})
+}
+function logout2(){
+	$.ajax({
+		async:false,
+		type:"post",
+		url:"../logout",
+		data:{},
+		contentType:"application/json",
+		success:function(data){
+			window.location.href=data.result;		
+		},
+		error:function(data){
+			alert("发生错误！");
+		}
+	})
+}

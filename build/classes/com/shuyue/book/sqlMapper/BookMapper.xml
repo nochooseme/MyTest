@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shuyue.book.mapper.BookMapper">
+
+	<resultMap type="book" id="booklist">
+		<id column="id" property="id"/>
+		<result column="book_name" property="bookName"/>
+		<result column="book_author_id" property="bookAuthorId"/>
+		<result column="book_pic" property="bookPic"/>
+		<result column="new_chapter" property="newChapter"/>
+		<result column="new_chapter_name" property="newChapterName"/>
+		<result column="book_follow" property="bookFollow"/>
+		<result column="username" property="authorName"/>
+		<result column="book_brief" property="bookBrief"/>
+		<result column="book_category" property="category"/>
+		<result column="status" property="status"/>
+		<result column="bsId" property="bsId"/>
+	</resultMap>
+	
+	<resultMap type="pagingOutput" id="pagingresult">
+		<result column="count(*)" property="all"></result>
+		<collection property="selectresult" ofType="book">
+			<id column="id" property="id"/>
+			<result column="book_name" property="bookName"/>
+			<result column="book_author_id" property="bookAuthorId"/>
+			<result column="book_pic" property="bookPic"/>
+			<result column="book_follow" property="bookFollow"/>
+			<result column="username" property="authorName"/>
+			<result column="book_brief" property="bookBrief"/>
+			<result column="book_category" property="category"/>
+		</collection>	
+	</resultMap>
+	
+	<resultMap type="bookCatalog" id="bookcatalog">
+		<id column="id" property="id"></id>
+		<result column="book_id" property="bookId"/>
+		<result column="chapter_name" property="chapterName"/>
+	</resultMap>
+	
+	<select id="recommendbook" resultMap="booklist">
+		select b.id,b.book_name,b.book_author_id,b.username,minb.chapter_name as new_chapter_name,minb.id as new_chapter,b.book_pic,b.book_category,b.book_brief
+		from (select b.*,u.username from book b,user u where b.status =2 and b.book_author_id=u.id) b left join
+		(select bc.id, bc.chapter_name,bc.book_id
+		from book_catalog bc,(select max(id) as mid 
+		from book_catalog 
+		group by book_id ) mb
+		where bc.id=mb.mid) minb
+		on b.id=minb.book_id 
+	</select>
+	
+	<select id="count" parameterType="pagingInput" resultType="int">
+		select count(*)
+		from book
+		where status &gt;0 
+		<if test="param!=null and param!='' and type==1 and param!='all' ">
+			and book_category=#{param}
+		</if>
+		<if test="param!=null and param!='' and type==2">
+			and book_name=#{param}
+		</if>
+	</select>
+	
+	<select id="chaptercount" resultType="int" parameterType="long">
+		select count(*)
+		from book_catalog
+		where book_id=#{bookId}
+	</select>
+	
+	<select id="categorybook" parameterType="pagingInput" resultMap="booklist">
+		select b.id,b.book_name,b.book_author_id,b.username,minb.chapter_name as new_chapter_name,minb.id as new_chapter,b.book_pic,b.book_category,b.book_brief
+		from (select b.*,u.username from book b,user u where b.status &gt;0 
+		<if test="param!=null and param!='' and param!='all'">
+			and b.book_category=#{param}
+		</if>
+		 and b.book_author_id=u.id limit ${(page-1)*10},10 ) b left join
+		(select bc.id, bc.chapter_name,bc.book_id
+		from book_catalog bc,(select max(id) as mid 
+		from book_catalog 
+		group by book_id ) mb
+		where bc.id=mb.mid) minb
+		on b.id=minb.book_id 
+		
+	</select>
+	
+	<select id="searchcategorybook" parameterType="pagingInput" resultMap="booklist">
+		select b.id,b.book_name,b.book_author_id,b.username,minb.chapter_name as new_chapter_name,minb.id as new_chapter,b.book_pic,b.book_category,b.book_brief
+		from (select b.*,u.username from book b,user u where b.status &gt;0 
+		<if test="param1!=null and param1!=''">
+			and b.book_category=#{param1}
+		</if>
+		<if test="param!=null and param!=''">
+		and b.book_name like "%${param}%"
+		</if>
+		 and b.book_author_id=u.id limit ${(page-1)*10},10 ) b left join
+		(select bc.id, bc.chapter_name,bc.book_id
+		from book_catalog bc,(select max(id) as mid 
+		from book_catalog 
+		group by book_id ) mb
+		where bc.id=mb.mid) minb
+		on b.id=minb.book_id 
+		
+	</select>
+	
+	<select id="searchcategorybookcount" parameterType="pagingInput" resultType="int">
+		select count(*)
+		from book
+		where status &gt;0 
+		<if test="param1!=null and param1!=''">
+			and book_category=#{param1}
+		</if>
+		<if test="param!=null and param!=''">
+		and book_name like "%${param}%"
+		</if>
+	</select>
+	
+	<select id="searchbookbyname" parameterType="pagingInput" resultMap="booklist">
+		select b.id,b.book_name,b.book_author_id,b.username,minb.chapter_name as new_chapter_name,minb.id as new_chapter,b.book_pic,b.book_category,b.book_brief
+		from (select b.*,u.username from book b,user u where b.status &gt;0 and b.book_author_id=u.id and b.book_name like "%${param}%" limit ${(page-1)*10},10) b left join
+		(select bc.id, bc.chapter_name,bc.book_id
+		from book_catalog bc,(select max(id) as mid 
+		from book_catalog 
+		group by book_id ) mb
+		where bc.id=mb.mid) minb
+		on b.id=minb.book_id 
+
+	</select>
+	
+	<select id="bookinfo" parameterType="long" resultType="book">
+		select b.id,b.book_name,b.book_author_id,b.username,minb.chapter_name as newChapterName,minb.id as newChapter,b.book_pic,b.book_category,b.book_brief
+		from (select b.*,u.username from book b,user u where b.status &gt;0 and b.book_author_id=u.id and b.id=#{id}) b left join
+		(select bc.id, bc.chapter_name,bc.book_id
+		from book_catalog bc,(select max(id) as mid 
+		from book_catalog 
+		group by book_id ) mb
+		where bc.id=mb.mid) minb
+		on b.id=minb.book_id
+	</select>
+	
+	<select id="bookInfo" parameterType="long" resultType="book">
+		select id,book_name,book_pic,book_category as category,book_brief
+		from book
+		where id=#{id}
+	</select>
+	
+
+	<select id="bookCatalogs" parameterType="pagingInput" resultMap="bookcatalog">
+		select id,chapter_name
+		from book_catalog
+		where book_id=#{param}
+		limit ${(page-1)*10},10
+	</select>
+	
+	<select id="bookChapter" parameterType="long" resultType="bookChapter">
+		select bc.id,bc.chapter_name,bc.chapter_start,bc.chapter_rows,b.book_path,bc.book_id 
+		from book_catalog bc,book b
+		where bc.id=#{id} and bc.book_id=b.id
+	</select>
+	
+	<select id="npChapter" parameterType="bookCatalog" resultType="bookCatalog">
+		select id,chapter_name
+		from book_catalog
+		where book_id=(select book_id from book_catalog where id=#{id})
+		<if test="status!=null and status!='' and status==-1">
+			and id &lt;#{id}
+			order by id
+			desc
+		</if>
+		<if test="status!=null and status!='' and status==1">
+			and id &gt;#{id}
+		</if>
+		limit 1
+	</select>
+	
+	<insert id="addBook" parameterType="book">
+		insert into book(book_name,book_author_id,book_pic,book_path,book_brief,book_category,status) 
+		value(#{bookName},#{bookAuthorId},#{bookPic},#{bookPath},#{bookBrief},#{category},0)
+	</insert>
+	
+	<update id="updateBook" parameterType="book" >
+		update book
+		set book_name=#{bookName},book_category=#{category},book_brief=#{bookBrief}
+		where id=#{id}
+	</update>
+	
+	<update id="delBook" parameterType="long">
+		update book
+		set status=-2
+		where id=#{id}
+	</update>
+	
+	<insert id="addChapter" parameterType="bookChapter">
+		insert into book_catalog(book_id,chapter_name,chapter_start,chapter_rows)
+		value(#{bookId},#{chapterName},#{chapterStart},#{chapterRows})
+	</insert>
+	<select id="bookPath" parameterType="long" resultType="string">
+		select book_path
+		from book
+		where id=#{id}
+	</select>
+	
+	<select id="bookpath" parameterType="long" resultType="string">
+		select book_path
+		from book b,book_catalog bc
+		where bc.id=#{id} and bc.book_id=b.id
+	</select>
+	
+	<update id="updateChpater" parameterType="bookChapter">
+		update book_catalog
+		set chapter_name=#{chapterName},chapter_start=#{chapterStart},chapter_rows=#{chapterRows}
+		where id=#{id}
+	</update>
+	
+	<update id="delChpater" parameterType="long">
+		update book_catalog
+		set status=-2
+		where id=#{id}
+	</update>
+	
+	<select id="authorBook" parameterType="long" resultMap="booklist">
+		select b.id,b.book_name,b.book_author_id,b.username,minb.chapter_name as new_chapter_name,minb.id as new_chapter,b.book_pic,b.book_category,b.book_brief
+		from (select b.*,u.username from book b,user u where b.status &gt;0 and b.book_author_id=u.id and b.book_author_id=#{id} ) b left join
+		(select bc.id, bc.chapter_name,bc.book_id
+		from book_catalog bc,(select max(id) as mid 
+		from book_catalog 
+		group by book_id ) mb
+		where bc.id=mb.mid) minb
+		on b.id=minb.book_id 
+	</select>
+
+	
+	<select id="myBook" parameterType="pagingInput" resultMap="booklist">
+		select b.id,b.book_name,b.book_author_id,b.username,minb.chapter_name as new_chapter_name,minb.id as new_chapter,b.book_pic,b.book_category,b.book_brief,b.status
+		from (select b.*,u.username from book b,user u where b.book_author_id=u.id and u.id=#{id}<if test="param!='' and param!=null">
+			and b.status=#{param}
+		</if> limit ${(page-1)*10},10) b left join
+		(select bc.id, bc.chapter_name,bc.book_id,bc.status
+		from book_catalog bc,(select max(id) as mid 
+		from book_catalog 
+		group by book_id ) mb
+		where bc.id=mb.mid) minb
+		on b.id=minb.book_id 
+	</select>
+	
+	<select id="myBookcount" parameterType="pagingInput" resultType="int">
+		select count(*)
+		from book
+		where book_author_id=#{id}
+		<if test="param!='' and param!=null">
+			and status=#{param}
+		</if>
+		
+		
+	</select>
+	
+	<select id="bookchapter" parameterType="long" resultMap="bookcatalog">
+		select id,chapter_name,book_id,status
+		from book_catalog
+		where book_id=#{id} and status!=-2
+	</select>
+	
+	<update id="checkBook" parameterType="check">
+		update book
+		set status=#{check}
+		where id=#{id}
+	</update>
+	
+	<update id="checkChapter" parameterType="check">
+		update book_catalog
+		set status=#{check}
+		where id=#{id}
+	</update>
+	
+	<select id="findReaded" parameterType="readed" resultType="int">
+		select count(*)
+		from book_shelf
+		where u_id=#{uId} and b_id=#{bId}
+	</select>
+	
+	<update id="updateReaded" parameterType="readed">
+		update book_shelf
+		set bc_id=#{bcId},read_time=#{readTime}
+		where u_id=#{uId} and b_id=#{bId}
+	</update>
+	
+	<insert id="addReaded" parameterType="readed">
+		insert into book_shelf(u_id,bc_id,status,b_id,read_time)
+		value(#{uId},#{bcId},#{status},#{bId},#{readTime})
+	</insert>
+	
+	<select id="readed" parameterType="long" resultMap="booklist">
+		select new_chapter,b.id,bookAuthorId,book_name,authorName as username,bc.chapter_name as new_chapter_name
+		from ( select bs.bc_id as new_chapter,b.id as id,u.id as bookAuthorId,b.book_name,u.username as authorName 
+		from book_shelf bs,book b,user u
+		where bs.u_id=#{id} and  bs.b_id=b.id and b.book_author_id=u.id
+		 
+		order by bs.read_time desc ) b LEFT JOIN book_catalog bc
+		on bc.id=b.new_chapter
+	</select>
+	
+	<select id="bookShelf" parameterType="long" resultMap="booklist">
+		select new_chapter,bsId,b.id,b.bookAuthorId,book_name,authorName as username,bc.chapter_name as new_chapter_name
+		from ( select bs.id as bsId, bs.bc_id as new_chapter,b.id as id,u.id as bookAuthorId,b.book_name,u.username as authorName 
+		from book_shelf bs,book b,user u
+		where bs.u_id=#{id} and bs.status=1  and bs.b_id=b.id and b.book_author_id=u.id 
+		order by bs.read_time desc ) b LEFT JOIN book_catalog bc
+		on bc.id=b.new_chapter
+	</select>
+	<update id="updateBookShelf" parameterType="check">
+		update book_shelf
+		set status=#{check}
+		where b_id=#{id} and u_id=#{uId}
+	</update>
+
+	
+	<select id="booklists" parameterType="pagingInput" resultMap="booklist">
+		select b.id,b.book_name,b.book_author_id,b.username,minb.chapter_name as new_chapter_name,minb.id as new_chapter,b.book_pic,b.book_category,b.book_brief,b.status
+		from (select b.*,u.username from book b,user u where  b.book_author_id=u.id
+		<if test="type!=1">
+			and b.status  &gt;0
+		</if>
+		<if test="type==1">
+			and b.status =0
+		</if>
+		<if test="param!='' and param!=null">
+			and b.book_name like "%${param}%"
+		</if>
+		<if test="param1!='' and param1!=null">
+			and u.username=#{param1}
+		</if>
+		<if test="param2!='' and param2!=null">
+			and b.book_category=#{param2}
+		</if>
+		) b left join
+		(select bc.id, bc.chapter_name,bc.book_id
+		from book_catalog bc,(select max(id) as mid 
+		from book_catalog 
+		group by book_id ) mb
+		where bc.id=mb.mid) minb
+		on b.id=minb.book_id 
+		
+		limit ${(page-1)*10},10
+	</select>
+	
+	<select id="booklistscount" parameterType="pagingInput" resultType="int">
+		select count(*) 
+		from book b,user u
+		where u.id=b.book_author_id
+		<if test="type!=1">
+			and b.status &gt;0
+		</if>
+		<if test="type==1">
+			and b.status =0
+		</if>
+		<if test="param!='' and param!=null">
+			and b.book_name like "%${param}%"
+		</if>
+		<if test="param1!='' and param1!=null">
+			and u.username=#{param1}
+		</if>
+		<if test="param2!='' and param2!=null">
+			and b.book_category=#{param2}
+		</if>
+	</select>
+	
+	<select id="unCheckBook" parameterType="pagingInput" resultMap="booklist">
+		select b.id,b.book_name,b.book_author_id,b.username,minb.chapter_name as new_chapter_name,minb.id as new_chapter,b.book_pic,b.book_category,b.book_brief
+		from (select b.*,u.username from book b,user u where b.status =0 and b.book_author_id=u.id
+		<if test="param!='' and param!=null">
+			and b.book_name like "%${param}%"
+		</if>
+		<if test="param1!='' and param1!=null">
+			and u.username=#{param1}
+		</if>
+		<if test="param2!='' and param2!=null">
+			and b.book_category=#{param2}
+		</if>
+		) b left join
+		(select bc.id, bc.chapter_name,bc.book_id
+		from book_catalog bc,(select max(id) as mid 
+		from book_catalog 
+		group by book_id ) mb
+		where bc.id=mb.mid) minb
+		on b.id=minb.book_id 
+		
+		limit ${(page-1)*10},10
+	</select>
+	
+	<update id="starbook" parameterType="check">
+		update book
+		set status=#{check}
+		where id=#{id}
+	</update>
+	
+	<update id="check" parameterType="check">
+		update book
+		set status=#{check}
+		where id=#{id}
+	</update>
+	
+	<update id="updatepic" parameterType="book" >
+		update book
+		set book_pic=#{bookPic}
+		where id=#{id}
+	</update>
+	
+	<update id="delshelf" parameterType="check">
+		update book_shelf
+		set status=0
+		where id=#{id}
+	</update>
+</mapper>

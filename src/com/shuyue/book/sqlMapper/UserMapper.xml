@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shuyue.book.mapper.UserMapper">
+	
+	<resultMap type="user" id="userlist">
+		<id column="id" property="id"/>
+		<result column="username" property="username"/>
+		<result column="sex" property="sex"/>
+		<result column="name" property="name"/>
+		<result column="email" property="email"/>
+		<result column="phone" property="phone"/>
+		<result column="bank_card" property="bankCard"/>
+		<result column="level" property="level"/>
+	</resultMap>
+	
+	<select id="findname" parameterType="string" resultType="int">
+		select count(*)
+		from user
+		where status=0 and name=#{name}
+	</select>
+	
+	<insert id="register" parameterType="user">
+		insert into user(name,password,username,email,sex,brief,userpic)
+		value(#{name},#{password},#{username},#{email},#{sex},#{brief},#{userpic})
+	</insert>
+	
+	<select id="login" parameterType="user" resultType="user">
+		select *
+		from user
+		where status!=-1 and name=#{name}
+	</select>
+	
+	<select id="userInfo" parameterType="long" resultType="user">
+		select username,userpic
+		from user
+		where id=#{id}
+	</select>
+	
+	<select id="userinfo" parameterType="long" resultType="user">
+		select *
+		from user
+		where id=#{id}
+	</select>
+	
+	<update id="updateUser" parameterType="user">
+		update user
+		set username=#{username},sex=#{sex},brief=#{brief},email=#{email}
+		where id=#{id}
+	</update>
+	
+	<update id="adminupdateuser" parameterType="user">
+		update user
+		set username=#{username},email=#{email}
+		where id=#{id}
+	</update>
+	
+	<update id="updatePassword" parameterType="user" >
+		update user
+		set password=#{password}
+		where id=#{id}
+	</update>
+	
+	<update id="updateStatus" parameterType="user">
+		update user
+		set status=#{status}
+		where id=#{id}
+	</update>
+	
+	<select id="authorList" parameterType="pagingInput" resultMap="userlist">
+		select u.id,u.username,u.sex,u.name,u.email,a.phone,a.bank_card,a.level
+		from user u,author a
+		where u.id=a.u_id
+		<if test="param!=null and param!=''">
+			and u.username like "%${param}%"
+		</if>
+		<if test="param1!=null and param1!=''">
+			and u.name like "%${param1}%"
+		</if>
+		<if test="type!=null and type!=''">
+			and u.status=#{type}
+		</if>
+		limit ${(page-1)*10},10
+		
+	</select>
+	
+	<select id="authorCount" parameterType="pagingInput" resultType="int">
+		select count(*)
+		from user
+		where 1=1
+		<if test="param!=null and param!=''">
+			and username like "%${param}%"
+		</if>
+		<if test="param1!=null and param1!=''">
+			and name like "%${param1}%"
+		</if>
+		<if test="type!=null and type!=''">
+			and status=#{type}
+		</if>
+	</select>
+	
+	<select id="authorInfo" parameterType="long" resultType="user">
+		select u.id,u.name,u.username,a.level,a.phone,a.bank_Card
+		from user u,author a
+		where u.id=#{id} and u.id=a.u_id
+	</select>
+	
+	<update id="updateauthorlevel" parameterType="user">
+		update author
+		set level=#{level}
+		where u_id=#{id}
+	</update>
+	
+	<select id="editList" resultMap="userlist">
+		select id,name,username,email
+		from user 
+		where status=2
+	</select>
+	
+	<update id="addEdit" parameterType="long">
+		update user
+		set status=2
+		where id=#{id}
+	</update>
+	
+	<update id="delEdit" parameterType="long">
+		update user 
+		set status=0
+		where id=#{id}
+	</update>
+	
+	<select id="searchUser" parameterType="paginginput" resultMap="userlist">
+		select id,name,username,email
+		from user
+		where status!=-1
+		<if test="param!=null and param!=''">
+			and username like "%${param}%"
+		</if>
+		limit ${(page-1)*10},10
+	</select>
+	
+	<select id="searchUsercount" parameterType="paginginput" resultType="int">
+		select count(*)
+		from user
+		where status!=-1
+		<if test="param!=null and param!=''">
+			and username like "%${param}%"
+		</if>
+	</select>
+	
+	<select id="searchuser" parameterType="user" resultMap="userlist">
+		select id,name,username
+		from user
+		where status!=-1
+		<if test="name!=null and name!=''">
+			and name=#{name}
+		</if>
+		<if test="username!=null and username!=''">
+			and username=#{username}
+		</if>
+	</select>
+	
+	<select id="writeInfo" parameterType="long" resultType="user">
+		select a.*,u.id,u.username,u.name  
+		from author a,user u
+		where u.id=#{id} and u.id=a.u_id 
+	</select>
+	
+	<select id="user" parameterType="long" resultType="user">
+		select * 
+		from user
+		where id=#{id}
+	</select>
+	
+	<update id="resetpsw" parameterType="long">
+		update user
+		set password='123456'
+		where id=#{id}
+	</update>
+	
+	<insert id="beauthor" parameterType="user">
+		insert into author(u_id,phone,bank_card,level)
+		value(#{id},#{phone},#{bankCard},1)
+	</insert>
+	
+	<update id="upauthor" parameterType="long">
+		update user
+		set status=1
+		where id=#{id}
+	</update>
+	
+	<update id="updatepic" parameterType="user">
+		update user
+		set userpic=#{userpic}
+		where id=#{id}
+	</update>
+	
+	<select id="getpassword" parameterType="long" resultType="string">
+		select password
+		from user
+		where id=#{id}
+	</select>
+	
+	<update id="updatepassword" parameterType="newPassword">
+		update user
+		set password=#{newpassword}
+		where id=#{id}
+	</update>
+</mapper>
