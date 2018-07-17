@@ -10,8 +10,10 @@
   Caused by: java.lang.IllegalArgumentException: Property ‘sqlSessionFactory‘ or ‘sqlSessionTemplate‘ are required  
   解决方案：  
   pom.xml中添加  
+  <pre><code>
     <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>druid-spring-boot-starter</artifactId>
-      <version>1.1.9</version>
+    <groupId>com.alibaba</groupId>
+    <artifactId>druid-spring-boot-starter</artifactId>
+    <version>1.1.9</version>
     </dependency>
+  </code></pre>
