@@ -11,9 +11,9 @@
   解决方案：  
   pom.xml中添加  
   <pre><code>
-    <dependency>
-    <groupId>com.alibaba</groupId>
-    <artifactId>druid-spring-boot-starter</artifactId>
-    <version>1.1.9</version>
-    </dependency>
+    &lt;dependency&gt;
+      &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+      &lt;artifactId&gt;druid-spring-boot-starter&lt;/artifactId&gt;
+      &lt;version&gt;1.1.9&lt;/version&gt;
+    &lt;/dependency&gt;
   </code></pre>
