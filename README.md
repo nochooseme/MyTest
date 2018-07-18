@@ -1,14 +1,13 @@
 # MyTest
 基于SSM框架简单实现书籍在线阅读系统
 # Spring Boot 测试
-1.错误提示：  
-  检测不到mapper  
-  解决方案:  
+## 1.配置数据库后
+  Application中添加  
+  @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+## 2.检测不到mapper  
   Application中添加  
   @MapperScan("com.ljl.online.map.mapper")  
-2.错误提示：  
-  Caused by: java.lang.IllegalArgumentException: Property ‘sqlSessionFactory‘ or ‘sqlSessionTemplate‘ are required  
-  解决方案：  
+## 3.Caused by: java.lang.IllegalArgumentException: Property ‘sqlSessionFactory‘ or ‘sqlSessionTemplate‘ are required    
   pom.xml中添加  
   <pre><code>
     &lt;dependency&gt;
