@@ -16,3 +16,5 @@
       &lt;version&gt;1.1.9&lt;/version&gt;
     &lt;/dependency&gt;
   </code></pre>
+## 4.com.alibaba.druid.filter.stat:name=statFilter,type=StatFilter
+spring.datasource.druid.filter.stat.enabled=false
